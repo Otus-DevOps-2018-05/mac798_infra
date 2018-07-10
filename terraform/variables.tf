@@ -34,7 +34,7 @@ variable "appusername" {
 
 variable "project_ssh_users" {
   default = {
-    "appuser" = "~/.ssh/id_rsa.pub"
+    "appuser" = "files/id_rsa_test.pub"
   }
   type        = "map"
   description = "list of project-wide user accounts allowed to connect to instances with ssh key"
