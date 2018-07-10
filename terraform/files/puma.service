@@ -1,0 +1,13 @@
+[Unit]
+Description=Reddit blog web-app
+After=network.target mongod
+Requires=mongod
+
+[Service]
+User=mac08
+WorkingDirectory=/usr/local/share/reddit
+ExecStart=/usr/local/bin/puma
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
