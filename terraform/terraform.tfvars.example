@@ -1,0 +1,11 @@
+project_id = "infra-207721"
+disk_image = "reddit-base"
+public_key_path = "files/id_rsa_test.pub"
+private_key_path = "files/id_rsa_test"
+appusername = "mac08"
+project_ssh_users = {
+  "mac08" = "files/id_rsa_test.pub"
+  "appuser1" = "files/id_rsa_test.pub"
+  "appuser2" = "files/id_rsa_test.pub"
+}
+instance_count = 2

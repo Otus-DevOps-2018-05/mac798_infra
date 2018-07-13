@@ -1,6 +1,79 @@
 # mac798_infra
 mac798 Infra repository
 
+# ДЗ 6
+## Основное задание
+* Проделаны все манипуляции со слайдов домашнего задания
+* Определите input переменную для приватного ключа, использующегося в определении подключения для провижинеров (connection): В файле variables.tf
+```
+variable private_key_path {
+  description = "Path to the private key used for ssh access"
+  type        = "string"
+}
+```
+* Определите input переменную для задания зоны в ресурсе "google_compute_instance" "app". У нее должно быть значение по умолчанию
+```
+variable "zone" {
+  description = "Zone"
+  default = "europe-north1-a"
+  type    = "string"
+}
+```
+* Отформатированы все файлы `*.tf` командой `terraform fmt`
+* создан terraform.tfvars.example
+
+## Задание со *
+* добавление ключа для пользователя appuser1 :
+```
+resource "google_compute_project_metadata" "project_metadata" {
+  project = "${var.project_id}"
+
+  metadata = {
+    #    "ssh-keys" = "${join("\n",formatlist("%s:%s", "${keys(var.project_ssh_users)}", "${data.template_file.ssh_users.*.rendered)}")}"
+    "ssh-keys" = "appuser1:${file(var.public_key_path)}"
+  }
+}
+```
+* добавление ключей нескольких пользователей:
+создадим переменную типа map { имя_пользователя: файл ключа }
+```
+variable "project_ssh_users" {
+  default = {  }
+  type        = "map"
+  description = "list of project-wide user accounts allowed to connect to instances with ssh key"
+}
+```
+```
+project_ssh_users = {
+  "mac08" = "~/.ssh/id_rsa.pub"
+  "appuser1" = "~/.ssh/id_rsa.pub"
+  "appuser2" = "~/.ssh/id_rsa.pub"
+}
+```
+добавим данные template_file
+```
+data "template_file" "ssh_users" {
+  count    = "${length(values(var.project_ssh_users))}"
+  template = "$${remote_user}:$${keyfile_content}"
+
+  vars {
+    remote_user     = "${element(keys(var.project_ssh_users), count.index)}"
+    keyfile_content = "${trimspace(file(element(values(var.project_ssh_users), count.index)))}"
+  }
+}
+```
+изменяем google_compute_project_metadata `"ssh-keys" = "${join("\n", "${data.template_file.ssh_users.*.rendered}")}"`
+* Добавил из консоли в метаданные проекта ключ для пользователя appuser_web. После применения terraform apply Ключи созданные terraform-ом затерли значения, установленные  вручную.
+
+## Задание с **
+* Добавил к ресурсу resource google_compute_instance атрибут count, устанавливаемый через переменную instance_count
+* Добавил к имени экземпляра вм его индекс
+* В файле lb.tf 3 ресурса google_compute_forwarding_rule -- балансирующее правило брандмауэра, google_compute_target_pool -- пул экземпляров вм, являющихся конечными целями баланстровщика и google_compute_http_health_check -- правило проверки доступности целевых экземпляров вм.
+* изменил описание переменной вывода app_external_ip в соответствии с тем, что вместо одного экземпляра теперь появляется список
+* Добавил переменную вывода balancer_external_ip с адресом балансировщика.
+
+
+
 # ДЗ 5
 
 * Создан шаблон как указано в слайдах
