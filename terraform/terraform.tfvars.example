@@ -8,4 +8,4 @@ project_ssh_users = {
   "appuser1" = "files/id_rsa_test.pub"
   "appuser2" = "files/id_rsa_test.pub"
 }
-instance_count = 2
+instance_count = 1

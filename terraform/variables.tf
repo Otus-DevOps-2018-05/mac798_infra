@@ -16,10 +16,16 @@ variable private_key_path {
   type        = "string"
 }
 
-variable disk_image {
+variable app_disk_image {
   description = "Disk image"
   type        = "string"
 }
+
+variable db_disk_image {
+  description = "Disk image"
+  type        = "string"
+}
+
 
 variable "zone" {
   description = "Zone"
