@@ -57,3 +57,9 @@ variable puma_allow_ip {
   default = "0.0.0.0/0"
   type="string"
 }
+
+variable scene {
+  default = "prod"
+  type = "string"
+  description = "stage or prod (or whatever)"
+}

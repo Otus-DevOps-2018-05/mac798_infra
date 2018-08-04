@@ -1,0 +1,6 @@
+app_disk_image = "reddit-apponly"
+db_disk_image = "reddit-db"
+public_key_path = "~/.ssh/id_rsa.pub"
+private_key_path = "~/.ssh/id_rsa"
+app_username = "mac08"
+ssh_allow_ip = "128.68.6.195/32"
