@@ -16,19 +16,18 @@ resource "google_compute_instance" "app" {
     network = "default"
 
     access_config {
-        nat_ip = "${join("", "${google_compute_address.app_ip.*.address}")}"
+      nat_ip = "${join("", "${google_compute_address.app_ip.*.address}")}"
     }
   }
 
   metadata {
     ssh-keys = "${var.app_username}:${file("${var.public_key_path}")}"
   }
-
 }
 
 resource "google_compute_address" "app_ip" {
   count = "${var.persistent_ip ? 1 : 0}"
-  name = "${var.name_prefix}reddit-app-ip"
+  name  = "${var.name_prefix}reddit-app-ip"
 }
 
 resource "null_resource" "provisioners" {
@@ -53,7 +52,5 @@ resource "null_resource" "provisioners" {
 
   provisioner "local-exec" {
     command = "echo Run provisioner for ${google_compute_instance.app.0.name}"
-
   }
-
 }

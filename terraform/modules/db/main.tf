@@ -29,7 +29,6 @@ resource "google_compute_instance" "db" {
     agent       = false
     private_key = "${file("${var.private_key_path}")}"
   }
-
 }
 
 resource "null_resource" "provisioners" {
@@ -54,7 +53,5 @@ resource "null_resource" "provisioners" {
 
   provisioner "local-exec" {
     command = "echo Run provisioner for ${google_compute_instance.db.0.name}"
-
   }
-
 }

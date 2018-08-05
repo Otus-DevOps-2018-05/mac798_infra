@@ -1,11 +1,11 @@
 variable project_id {
   default = "infra-207721"
-  type = "string"
+  type    = "string"
 }
 
 variable region {
   default = "europe-north1"
-  type = "string"
+  type    = "string"
 }
 
 variable public_key_path {
@@ -29,8 +29,8 @@ variable db_disk_image {
 
 variable "zone" {
   description = "Zone"
-  default = "europe-north1-a"
-  type    = "string"
+  default     = "europe-north1-a"
+  type        = "string"
 }
 
 variable "app_username" {
@@ -40,20 +40,20 @@ variable "app_username" {
 
 variable app_vm_tag {
   default = "reddit-app"
-  type="string"
+  type    = "string"
 }
 
 variable db_vm_tag {
   default = "reddit-db"
-  type="string"
+  type    = "string"
 }
 
 variable ssh_allow_ip {
   default = "0.0.0.0/0"
-  type="string"
+  type    = "string"
 }
 
 variable puma_allow_ip {
   default = "0.0.0.0/0"
-  type="string"
+  type    = "string"
 }
