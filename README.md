@@ -21,7 +21,7 @@ appserver                  : ok=2    changed=1    unreachable=0    failed=0
 
 ## Задание со *
 * создан файл inventory.json с описанием узлов и исполняемый файл inventory.sh, который выводит содержимое json-файла
-* создан исполняемый файл inventory.pl, который разбирает вывод команды `gcloud compute instances list` и выводит соответствующий json для ansible. 
+* создан исполняемый файл inventory.pl, который разбирает вывод команды `gcloud compute instances list` и выводит соответствующий json для ansible.
 
  # ДЗ 7
 ## Основное задание
