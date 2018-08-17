@@ -12,7 +12,7 @@ module "reddit_app" {
   vm_tag           = "${var.app_vm_tag}"
   zone             = "${var.zone}"
   disk_image       = "${var.app_disk_image}"
-  run_provisioners = true
+  run_provisioners = false
   name_prefix      = "${var.scene}-"
   persistent_ip    = false
 }
@@ -24,7 +24,7 @@ module "reddit_db" {
   vm_tag           = "${var.db_vm_tag}"
   zone             = "${var.zone}"
   disk_image       = "${var.db_disk_image}"
-  run_provisioners = true
+  run_provisioners = false
   name_prefix      = "${var.scene}-"
 }
 

@@ -1,0 +1,22 @@
+---
+- name: Configure hosts & deploy application
+  hosts: all
+  tasks:
+    - name: Change mongoDB config file
+      become: true
+      vars:
+        mongo_bind_ip: 0.0.0.0
+      template:
+        src: templates/mongod.conf.j2
+        dest: /etc/mongod.conf
+        mode: 0644
+      tags: db-tag
+      notify: restart mongod
+
+    - name: Create systemd unit file for puma server
+      become: true
+
+  handlers:
+    - name: restart mongod
+      become: true
+      service: name=mongod state=restarted
