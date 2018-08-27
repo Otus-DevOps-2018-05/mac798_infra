@@ -1,23 +1,13 @@
 ---
 - name: Configure Reddit app
-  hosts: app
-  vars:
-    mongo_port: 27017
+  hosts: all
   become: true
   tasks:
-    - name: Create systemd unit file for puma server
-      copy:
-        src: files/puma.service
-        dest: /lib/systemd/system/puma.service
-      notify: restart puma
-
-    - name: Enable puma
-      systemd: name=puma enabled=yes
-
-    - name: Add config for DB connection
-      template:
-        src: templates/db_config.j2
-        dest: /etc/default/puma_db_config
-  handlers:
-    - name: restart puma
-      systemd: name=puma state=restarted
+    - name: Install necessary componets for puma server
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - build-essential
+        - ruby-full
+        - ruby-bundler

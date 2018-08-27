@@ -4,7 +4,7 @@
     "project_id": null,
     "source_image_family": null,
     "machine_type": "g1-small",
-    "app_owner": "mac08",
+    "app_owner": "appuser",
     "tags": "mongodb-server,packer-created",
     "description": "mongodb vm image created w/packer",
     "disk_size": "20",
