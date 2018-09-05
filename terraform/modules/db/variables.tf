@@ -1,13 +1,3 @@
-variable project_id {
-  default = "infra-207721"
-  type    = "string"
-}
-
-variable region {
-  default = "europe-north1"
-  type    = "string"
-}
-
 variable public_key_path {
   description = "Path to the public key used for ssh access"
 }
@@ -17,13 +7,9 @@ variable private_key_path {
   type        = "string"
 }
 
-variable app_disk_image {
+variable disk_image {
   description = "Disk image"
-  type        = "string"
-}
-
-variable db_disk_image {
-  description = "Disk image"
+  default     = "reddit-db"
   type        = "string"
 }
 
@@ -38,22 +24,17 @@ variable "app_username" {
   description = "Username to connect with and to run app"
 }
 
-variable app_vm_tag {
-  default = "reddit-app"
-  type    = "string"
-}
-
-variable db_vm_tag {
+variable vm_tag {
   default = "reddit-db"
   type    = "string"
 }
 
-variable ssh_allow_ip {
-  default = "0.0.0.0/0"
-  type    = "string"
+variable run_provisioners {
+  default     = "1"
+  description = "run or not provisioners 0=don't run 1=run"
 }
 
-variable puma_allow_ip {
-  default = "0.0.0.0/0"
-  type    = "string"
+variable name_prefix {
+  default     = ""
+  description = "instance name prefix ('prod-' for exaample)"
 }
