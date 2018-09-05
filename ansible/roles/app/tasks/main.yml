@@ -1,0 +1,18 @@
+---
+  - name: Create systemd unit file for puma server
+    copy:
+      src: files/puma.service
+      dest: /lib/systemd/system/puma.service
+    notify: restart puma
+
+  - name: Enable puma
+    systemd: name=puma enabled=yes
+
+  - name: Add config for DB connection
+    template:
+      src: templates/db_config.j2
+      dest: /etc/default/puma_db_config
+
+  - name: Show debug info about variables
+    debug:
+      msg: "This host belongs to {{ env }} environment and db_host is {{ db_host }}"

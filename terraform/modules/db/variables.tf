@@ -25,8 +25,8 @@ variable "app_username" {
 }
 
 variable vm_tag {
-  default = "reddit-db"
-  type    = "string"
+  default = ["db"]
+  type    = "list"
 }
 
 variable run_provisioners {

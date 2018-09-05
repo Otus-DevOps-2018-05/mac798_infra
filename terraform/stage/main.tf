@@ -9,11 +9,11 @@ module "reddit_app" {
   public_key_path  = "${var.public_key_path}"
   private_key_path = "${var.private_key_path}"
   db_address       = "${module.reddit_db.db_address}"
-  vm_tag           = "${var.app_vm_tag}"
+  vm_tag           = ["${var.app_vm_tag}", "${var.scene}"]
   zone             = "${var.zone}"
   disk_image       = "${var.app_disk_image}"
   run_provisioners = false
-  name_prefix      = "${var.scene}-"
+  name_prefix      = "${var.scene == "" ? "" : "${var.scene}-"}"
   persistent_ip    = false
 }
 
@@ -21,11 +21,11 @@ module "reddit_db" {
   source           = "../modules/db"
   public_key_path  = "${var.public_key_path}"
   private_key_path = "${var.private_key_path}"
-  vm_tag           = "${var.db_vm_tag}"
+  vm_tag           = ["${var.db_vm_tag}", "${var.scene}"]
   zone             = "${var.zone}"
   disk_image       = "${var.db_disk_image}"
   run_provisioners = false
-  name_prefix      = "${var.scene}-"
+  name_prefix      = "${var.scene == "" ? "" : "${var.scene}-"}"
 }
 
 module "reddit_vpc" {

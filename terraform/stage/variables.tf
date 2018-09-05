@@ -1,5 +1,5 @@
 variable project_id {
-  default = "gcloud-project-2"
+  default = "infra-207721"
   type    = "string"
 }
 
@@ -39,12 +39,12 @@ variable "app_username" {
 }
 
 variable app_vm_tag {
-  default = "reddit-app"
+  default = "app"
   type    = "string"
 }
 
 variable db_vm_tag {
-  default = "reddit-db"
+  default = "db"
   type    = "string"
 }
 

@@ -34,8 +34,8 @@ variable db_address {
 }
 
 variable vm_tag {
-  default = "reddit-app"
-  type    = "string"
+  default = ["app"]
+  type    = "list"
 }
 
 variable run_provisioners {

@@ -2,7 +2,7 @@ resource "google_compute_instance" "app" {
   name         = "${var.name_prefix}reddit-app-01"
   machine_type = "g1-small"
   zone         = "${var.zone}"
-  tags         = ["${var.vm_tag}"]
+  tags         = "${var.vm_tag}"
 
   # определение загрузочного диска
   boot_disk {
@@ -28,6 +28,17 @@ resource "google_compute_instance" "app" {
 resource "google_compute_address" "app_ip" {
   count = "${var.persistent_ip ? 1 : 0}"
   name  = "${var.name_prefix}reddit-app-ip"
+}
+
+resource "google_compute_firewall" "default" {
+  name = "${var.name_prefix}http-app-access"
+  network = "default"
+
+  allow {
+    protocol = "tcp"
+    ports = [ 80 ]
+  }
+  target_tags = "${var.vm_tag}"
 }
 
 resource "null_resource" "provisioners" {

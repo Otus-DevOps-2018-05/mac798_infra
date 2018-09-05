@@ -2,7 +2,7 @@ resource "google_compute_instance" "db" {
   name         = "${var.name_prefix}reddit-db-01"
   machine_type = "g1-small"
   zone         = "${var.zone}"
-  tags         = ["reddit-db"]
+  tags         = "${var.vm_tag}"
 
   # определение загрузочного диска
   boot_disk {
