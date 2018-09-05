@@ -4,3 +4,5 @@
 *.tfvars
 .terraform/
 *.sw[pon]
+*.retry
+gcloud-credentials.json

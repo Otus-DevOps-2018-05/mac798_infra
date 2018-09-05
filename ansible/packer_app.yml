@@ -1,0 +1,13 @@
+---
+- name: Configure Reddit app
+  hosts: all
+  become: true
+  tasks:
+    - name: Install necessary componets for puma server
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - build-essential
+        - ruby-full
+        - ruby-bundler

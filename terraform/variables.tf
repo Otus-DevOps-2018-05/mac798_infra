@@ -1,5 +1,5 @@
 variable project_id {
-  default = "infra-207721"
+  default = "gcloud-project-2"
   type    = "string"
 }
 
