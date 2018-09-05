@@ -11,6 +11,8 @@ $gce_data = decode_json($gce_json);
 
 $destination_env = "stage";
 
+@possible_env = ('prod','stage','development');
+
 #print Dumper($gce_data);
 
 foreach my $inst (@$gce_data) {
@@ -27,15 +29,17 @@ foreach my $inst (@$gce_data) {
     }
   }
   my $int_ip = $inst->{networkInterfaces}[0]{networkIP};
-  my $group = "ungrouped";
-  foreach my $dest_tag ('app', 'db') {
-    if (grep(/^(|reddit-)(|[a-z]*-)$dest_tag$/, @{$inst->{tags}{items}})) {
-      $group = $dest_tag;
-      last;
+  my $add_to_ungroupped = 1;
+  foreach my $dest_tag (@{$inst->{tags}{items}}) {
+    if (grep( /$dest_tag/, @possible_env)) {
+      next;
     }
+    push @{$output_data{$dest_tag}}, $name;
+    $add_to_ungroupped = 0;
   }
-
-  push @{$output_data{$group}}, $name;
+  if ($add_to_ungroupped) {
+    push @{$output_data{ungrouped}}, $name;
+  }
 
   my($mtype) = ($inst->{machineType} =~ m#/machineTypes/(.*)$#);
   my($zone) = ($inst->{zone} =~ m#/zones/(.*)$#);
