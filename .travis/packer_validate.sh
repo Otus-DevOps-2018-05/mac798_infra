@@ -3,8 +3,9 @@ wd=`pwd`
 
 echo "Checking ansible installation"
 ANSIBLE_PLAYBOOK=`which ansible-playbook`
-if [ -z "${ANSIBLE_PLAYBOOK}" ]; then
+if [ "${ANSIBLE_PLAYBOOK}" = "" ]; then
   ANSIBLE_PLAYBOOK=`find / -type f -executable -name ansible-playbook 2>/dev/null|head -1`
+  [ "${ANSIBLE_PLAYBOOK}" = "" ] || PATH=$PATH:$(dirname ${ANSIBLE_PLAYBOOK})
 fi
 
 if [ -f packer/variables.json ]; then
@@ -16,7 +17,7 @@ fi
 for pk_tpl in `find ./packer -name \\*.json -and -not -name variables.json`; do
   echo "Validating $pk_tpl"
   if grep '"playbook_file": *"ansible/' "$pk_tpl" ; then
-    if [ -z "${ANSIBLE_PLAYBOOK}" ]; then
+    if [ "${ANSIBLE_PLAYBOOK}" = "" ]; then
       echo "No ansible-playbook executable found, skip validation of $pk_tpl"
       continue
     fi
