@@ -3,7 +3,10 @@ sudo: required
 language: bash
 before_install:
 - curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-05/run.sh|bash
-- bash .travis/linter.sh
+- bash .travis/ansible_lint.sh
+- bash .travis/terraform_validate.sh
+- bash .travis/packer_validate.sh
+
 notifications:
   slack:
     rooms:
