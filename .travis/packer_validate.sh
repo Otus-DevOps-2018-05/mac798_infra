@@ -7,17 +7,14 @@ else
   var_file_base=variables.json.example
 fi
 
+LIST="echo 'PACKER VALIDATE'"
+
 for pk_tpl in `find ./packer -name \\*.json -and -not -name variables.json`; do
-  echo "Validating $pk_tpl"
   if grep '"playbook_file": *"ansible/' "$pk_tpl" ; then
-    val_file="$pk_tpl"
-    var_file=packer/$var_file_base
-    WD=$wd
+    LIST="$LIST && echo $pk_tpl && packer validate -var-file=packer/$var_file_base $pk_tpl"
   else
-    WD="$wd/packer"
-    val_file="../$pk_tpl"
-    var_file=$var_file_base
+    LIST="$LIST && echo $pk_tpl && cd packer && packer validate -var-file=$var_file_base ../$pk_tpl && cd .."
   fi
-  echo   packer validate -var-file=$var_file "$val_file"
-  docker exec hw-test bash -c "cd '$WD'; packer validate -var-file=$var_file '$val_file'" || exit 1
 done
+
+docker exec hw-test bash -c "${LIST}"
