@@ -2,7 +2,7 @@
 wd=`pwd`
 
 echo "Checking ansible installation"
-which ansible-playbook || pip install ansible || exit 1
+which ansible-playbook || sudo pip install 'ansible>=2.4' || exit 1
 
 if [ -f packer/variables.json ]; then
   var_file_base=variables.json
