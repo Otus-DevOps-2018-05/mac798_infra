@@ -1,13 +1,6 @@
 #!/bin/sh
 wd=`pwd`
 
-echo "Checking ansible installation"
-ANSIBLE_PLAYBOOK=`which ansible-playbook`
-if [ "${ANSIBLE_PLAYBOOK}" = "" ]; then
-  ANSIBLE_PLAYBOOK=`find / -type f -executable -name ansible-playbook 2>/dev/null|head -1`
-  [ "${ANSIBLE_PLAYBOOK}" = "" ] || PATH=$PATH:$(dirname ${ANSIBLE_PLAYBOOK})
-fi
-
 if [ -f packer/variables.json ]; then
   var_file_base=variables.json
 else
@@ -17,18 +10,14 @@ fi
 for pk_tpl in `find ./packer -name \\*.json -and -not -name variables.json`; do
   echo "Validating $pk_tpl"
   if grep '"playbook_file": *"ansible/' "$pk_tpl" ; then
-    if [ "${ANSIBLE_PLAYBOOK}" = "" ]; then
-      echo "No ansible-playbook executable found, skip validation of $pk_tpl"
-      continue
-    fi
     val_file="$pk_tpl"
     var_file=packer/$var_file_base
+    WD=$wd
   else
-    cd "$wd/packer"
+    WD="$wd/packer"
     val_file="../$pk_tpl"
     var_file=$var_file_base
   fi
   echo   packer validate -var-file=$var_file "$val_file"
-  packer validate -var-file=$var_file "$val_file" || exit 1
-  cd "$wd"
+  docker exec hw-test bash -c "cd '$WD'; packer validate -var-file=$var_file '$val_file'" || exit 1
 done
