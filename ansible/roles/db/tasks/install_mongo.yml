@@ -1,0 +1,15 @@
+---
+  - name: Install MongoDB repository key
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: D68FA50FEA312927
+
+  - name: Install MongoDB repository source
+    apt_repository:
+      repo: deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse
+      filename: mongodb-org-3.2
+
+  - name: Install MongoDB server package
+    package:
+      name: mongodb-org
+      state: present

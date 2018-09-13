@@ -1,0 +1,9 @@
+---
+  - name: Create systemd unit file for puma server
+    copy:
+      src: files/puma.service
+      dest: /lib/systemd/system/puma.service
+    notify: restart puma
+
+  - name: Enable puma
+    systemd: name=puma enabled=yes
