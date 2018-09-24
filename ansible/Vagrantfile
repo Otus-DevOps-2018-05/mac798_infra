@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "playbooks/site.yml"
       ansible.groups = {
         "db" => ["dbserver"],
-        "db:vars" => { "mongo_bind_ip" => "0.0.0.0" }
+        "db:vars" => { "mongo_bind_ip" => "0.0.0.0", "env" => "dev" }
       }
     end
   end
@@ -24,8 +24,14 @@ Vagrant.configure("2") do |config|
     app.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbooks/site.yml"
       ansible.groups = {
-        "app" => ["dbserver"],
-        "app:vars" => { "db_host" => "10.10.10.10" }
+        "app" => ["appserver"],
+        "app:vars" => { "db_host" => "10.10.10.10", "env" => "dev" }
+      }
+      ansible.extra_vars = {
+          "deploy_user" => "vagrant",
+          "nginx_sites" => {
+              "default" => ["listen 80", "server_name reddit _", "location / { proxy_pass http://127.0.0.1:9292; }"]
+          }
       }
     end
   end
