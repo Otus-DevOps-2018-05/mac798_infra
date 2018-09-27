@@ -1,3 +1,6 @@
 ---
 - src: jdauphant.nginx
   version: v2.18.1
+- src: git@github.com:mac798/db-role.git
+  scm: git
+  name: db
