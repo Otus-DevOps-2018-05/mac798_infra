@@ -5,6 +5,7 @@
   tasks:
     - name: print username
       command: echo -n "Username is " && whoami
+      when: true
 
     - name: Fetch the latest version of application code
       git:
