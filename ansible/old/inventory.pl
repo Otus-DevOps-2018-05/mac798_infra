@@ -9,11 +9,16 @@ $gce_json = `gcloud compute instances list --format=json`;
 
 $gce_data = decode_json($gce_json);
 
+$destination_env = "stage";
+
 #print Dumper($gce_data);
 
 foreach my $inst (@$gce_data) {
   my $name = $inst->{name};
   my $ext_ip = undef;
+  if ($destination_env && ! grep( /^$destination_env$/, @{$inst->{tags}{items}})) {
+    next;
+  }
 
   foreach my $acfg (@{$inst->{networkInterfaces}[0]{accessConfigs}}) {
     if ($acfg->{type} eq 'ONE_TO_ONE_NAT'){
@@ -23,15 +28,13 @@ foreach my $inst (@$gce_data) {
   }
   my $int_ip = $inst->{networkInterfaces}[0]{networkIP};
   my $group = "ungrouped";
-  foreach my $instTag (@{$inst->{tags}{items}}) {
-    if ($instTag =~ m/reddit.*-db/) {
-      $group = 'db';
-      last;
-    } elsif ($instTag =~ m/reddit.*-app/) {
-      $group = 'app';
+  foreach my $dest_tag ('app', 'db') {
+    if (grep(/^(|reddit-)(|[a-z]*-)$dest_tag$/, @{$inst->{tags}{items}})) {
+      $group = $dest_tag;
       last;
     }
   }
+
   push @{$output_data{$group}}, $name;
 
   my($mtype) = ($inst->{machineType} =~ m#/machineTypes/(.*)$#);

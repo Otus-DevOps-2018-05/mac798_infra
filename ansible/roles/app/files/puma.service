@@ -1,0 +1,14 @@
+[Unit]
+Description=Reddit blog web-app
+After=network.target mongod
+Requires=mongod
+
+[Service]
+User=appuser
+WorkingDirectory=/home/appuser/reddit
+EnvironmentFile=/etc/default/puma_db_config
+ExecStart=/usr/local/bin/puma
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

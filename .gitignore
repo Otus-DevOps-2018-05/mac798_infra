@@ -6,3 +6,4 @@
 *.sw[pon]
 *.retry
 gcloud-credentials.json
+jdauphant.nginx
