@@ -1,0 +1,9 @@
+---
+  - name: Install python if neccessary
+    hosts: all
+    become: true
+    gather_facts: false
+
+    tasks:
+      - name: Install python for ansible
+        raw: which python || (apt-get update && apt-get install -y python-minimal)
